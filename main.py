@@ -91,6 +91,21 @@ async def nuke(interaction: discord.Interaction, channel: discord.TextChannel = 
         await interaction.response.send_message(f'Channel nuked and recreated: {new_channel.mention}')
     else:
         await interaction.response.send_message('This command can only be used in the specified category.')
+# Create a Flask app
+app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return "Bot is running"
+
+# Run the Flask app in a separate thread
+def run_flask():
+    app.run(host='0.0.0.0', port=5000)
+
+# Start the bot and Flask app
+if __name__ == "__main__":
+    from threading import Thread
+    flask_thread = Thread(target=run_flask)
+    flask_thread.start()
 # Run the bot
 bot.run(TOKEN)
