@@ -4,6 +4,7 @@ import itertools
 import json
 import asyncio
 import os
+from flask import Flask 
 
 # Load configuration from file
 with open('config.json') as config_file:
