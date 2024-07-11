@@ -1,0 +1,14 @@
+{
+  "status_rotation": {
+    "status_messages": ["aorlisrx", "tickets", "vouches"]
+  },
+  "sticky_message": {
+    "channel_id": "1260560117296922635",
+    "sticky_message": "<a:purple_bow_Galaxy:1260598482146689196> **__format:__**\n\n`+vouch` <@1210831629598326845> [`amount`] + [`order`] + [`price`]\nExample: +vouch @deprogecko 1x nitro boost $5\n\n<a:Purple_Alert:1260598468070608956> vouch within 13 hours else, warranty is voided! \n***(leaving the server voids warranty instantly!)***"
+  },
+  "nuke_command": {
+    "allowed_category_id": "1260559512885137420",
+    "user_id": "1210831629598326845",
+    "emoji": "💣"
+  }
+}
