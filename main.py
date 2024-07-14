@@ -4,7 +4,6 @@ import itertools
 import json
 import asyncio
 import os
-from flask import Flask 
 
 # Load configuration from file
 with open('config.json') as config_file:
@@ -20,7 +19,7 @@ status_messages = config["status_rotation"]["status_messages"]
 intents = discord.Intents.default()
 intents.presences = True
 intents.guilds = True
-intents.message_content = True  # Enable message content intent
+intents.messages = True  # Enable message intents
 
 # Initialize the Bot with intents
 bot = commands.Bot(command_prefix="!", intents=intents)
@@ -67,16 +66,13 @@ async def on_ready():
     # Start maintaining sticky message
     maintain_sticky_message.start()
 
-    # Sync the application commands with Discord
-    await bot.tree.sync()
-    print("Application commands synced")
+    print("Bot is ready.")
 
 # Nuke command to recreate the current channel
-@bot.tree.command(name="nuke", description="Nuke the current channel and recreate it.")
+@bot.command(name="nuke", description="Nuke the current channel and recreate it.")
 @commands.has_permissions(manage_channels=True)
-async def nuke(interaction: discord.Interaction, channel: discord.TextChannel = None):
-    if channel is None:
-        channel = interaction.channel
+async def nuke(ctx):
+    channel = ctx.channel
 
     allowed_category_id = int(config["nuke_command"]["allowed_category_id"])
 
@@ -89,24 +85,9 @@ async def nuke(interaction: discord.Interaction, channel: discord.TextChannel = 
         user_id = int(config["nuke_command"]["user_id"])
         emoji = config["nuke_command"]["emoji"]
         await new_channel.send(f'Chat nuked by <@{user_id}> {emoji}')
-        await interaction.response.send_message(f'Channel nuked and recreated: {new_channel.mention}')
+        await ctx.send(f'Channel nuked and recreated: {new_channel.mention}')
     else:
-        await interaction.response.send_message('This command can only be used in the specified category.')
-# Create a Flask app
-app = Flask(__name__)
+        await ctx.send('This command can only be used in the specified category.')
 
-@app.route('/')
-def home():
-    return "Bot is running"
-
-# Run the Flask app in a separate thread
-def run_flask():
-    app.run(host='0.0.0.0', port=5000)
-
-# Start the bot and Flask app
-if __name__ == "__main__":
-    from threading import Thread
-    flask_thread = Thread(target=run_flask)
-    flask_thread.start()
 # Run the bot
 bot.run(TOKEN)
